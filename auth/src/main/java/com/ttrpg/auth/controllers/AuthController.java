@@ -3,6 +3,7 @@ package com.ttrpg.auth.controllers;
 import com.ttrpg.auth.services.AuthService;
 import com.ttrpg.helper.services.auth.dto.UserDTO;
 import com.ttrpg.helper.services.auth.dto.UserDetailsDTO;
+import com.ttrpg.helper.services.auth.dto.UserRegistrationResponseDTO;
 import com.ttrpg.helper.services.auth.entites.User;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,21 +48,38 @@ public class AuthController {
     }
 
     @PostMapping(path=AUTHORIZATION_ADD_URI)
-    public ResponseEntity<String> addNewUser (@RequestBody UserDetailsDTO dto) {
+    public ResponseEntity<UserRegistrationResponseDTO> addNewUser (@RequestBody UserDetailsDTO dto) {
+        UserRegistrationResponseDTO response = new UserRegistrationResponseDTO(
+                dto.getUsername(),
+                dto.getEmail(),
+                "User successfully registered"
+        );
+        // Validate input
         if (dto.getUsername() == null || dto.getUsername().isEmpty()) {
-            return new ResponseEntity<>("Username cannot be empty", HttpStatus.BAD_REQUEST);
+            response.setMessage("Username is required");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else if (dto.getEmail() == null || dto.getEmail().isEmpty()) {
-            return new ResponseEntity<>("Email cannot be empty", HttpStatus.BAD_REQUEST);
+            response.setMessage("Email is required");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else if (dto.getPassword() == null || dto.getPassword().isEmpty()) {
-            return new ResponseEntity<>("Password cannot be empty", HttpStatus.BAD_REQUEST);
+            response.setMessage("Password is required");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        } else if (authService.existsByUsername(dto.getUsername())) {
+            response.setMessage("Username already exists");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        } else if (authService.existsByEmail(dto.getEmail())) {
+            response.setMessage("Email already exists");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } else if (authService.existsByUsernameAndEmail(dto.getUsername(), dto.getEmail())) {
-            return new ResponseEntity<>("Username and Email combination already exists", HttpStatus.CONFLICT);
+            response.setMessage("Username and Email combination already exists");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
         User n = UserDetailsDTO.convertDtoToEntity(dto);
         n.setRoles(Collections.singletonList(USER));
         authService.save(n);
-        return new ResponseEntity<>("New User Created", HttpStatus.OK);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(path=AUTHORIZATION_ADD_TEMP_URI)

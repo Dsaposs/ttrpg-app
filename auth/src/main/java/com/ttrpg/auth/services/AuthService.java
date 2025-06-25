@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
                 return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
                         .password(user.getPassword())
                         .roles(String.valueOf(user.getRoles()))
@@ -40,7 +41,17 @@ public class AuthService implements UserDetailsService {
     public boolean existsByUsername(String u) {
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            if (user.getUsername().equals(u)) {
+            if (user.getUsername().equalsIgnoreCase(u)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existsByEmail(String email) {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }

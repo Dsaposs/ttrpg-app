@@ -1,4 +1,4 @@
-package com.ttrpg.helper.services.core.alien.entities;
+package com.ttrpg.helper.services.core.game.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

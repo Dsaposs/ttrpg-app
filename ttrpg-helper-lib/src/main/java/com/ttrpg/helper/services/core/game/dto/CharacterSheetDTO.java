@@ -1,8 +1,8 @@
-package com.ttrpg.helper.services.core.alien.dto;
+package com.ttrpg.helper.services.core.game.dto;
 
 
 import com.ttrpg.helper.services.EntityDtoMapper;
-import com.ttrpg.helper.services.core.alien.entities.CharacterSheet;
+import com.ttrpg.helper.services.core.game.entities.CharacterSheet;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

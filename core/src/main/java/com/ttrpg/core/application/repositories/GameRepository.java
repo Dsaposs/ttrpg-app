@@ -1,6 +1,6 @@
 package com.ttrpg.core.application.repositories;
 
-import com.ttrpg.helper.services.core.alien.entities.Game;
+import com.ttrpg.helper.services.core.game.entities.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

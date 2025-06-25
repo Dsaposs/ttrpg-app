@@ -1,8 +1,8 @@
 package com.ttrpg.core.application.controllers;
 
 import com.ttrpg.core.application.services.CharacterSheetService;
-import com.ttrpg.helper.services.core.alien.dto.CharacterSheetDTO;
-import com.ttrpg.helper.services.core.alien.entities.CharacterSheet;
+import com.ttrpg.helper.services.core.game.dto.CharacterSheetDTO;
+import com.ttrpg.helper.services.core.game.entities.CharacterSheet;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

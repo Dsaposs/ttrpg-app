@@ -1,7 +1,7 @@
 package com.ttrpg.core.application.controllers;
 
-import com.ttrpg.helper.services.core.alien.dto.GameDTO;
-import com.ttrpg.helper.services.core.alien.entities.Game;
+import com.ttrpg.helper.services.core.game.dto.GameDTO;
+import com.ttrpg.helper.services.core.game.entities.Game;
 import com.ttrpg.core.application.services.GameService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;

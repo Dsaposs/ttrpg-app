@@ -46,6 +46,9 @@ public class AuthController {
 
     @PostMapping(path=AUTHORIZATION_ADD_URI)
     public ResponseEntity<String> addNewUser (@RequestParam String u, @RequestParam String p) {
+        if (authService.existsByUsername(u)) {
+            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+        }
         User n = new User();
         n.setUsername(u);
         n.setPassword(passwordEncoder.encode(p));

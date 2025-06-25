@@ -1,13 +1,11 @@
 package com.ttrpg.core.application.services;
 
 import com.ttrpg.core.application.repositories.GameRepository;
-import com.ttrpg.core.game.GameSession;
 import com.ttrpg.helper.services.auth.AuthClient;
 import com.ttrpg.helper.services.auth.dto.UsersListDTO;
 import com.ttrpg.helper.services.auth.entites.User;
-import com.ttrpg.helper.services.core.alien.entities.Game;
+import com.ttrpg.helper.services.core.game.entities.Game;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

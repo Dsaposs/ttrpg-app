@@ -36,4 +36,14 @@ public class AuthService implements UserDetailsService {
     public void save(User n) {
         userRepository.save(n);
     }
+
+    public boolean existsByUsername(String u) {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getUsername().equals(u)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -16,8 +16,9 @@ import java.util.List;
 public class UserDetailsDTO {
     private static final EntityDtoMapper<User,UserDetailsDTO> entityDtoMapper = new EntityDtoMapper<>();
     private String username;
+    private String email;
     private String password;
-    private List<String> authorities;
+    private List<String> roles;
 
     public static UserDetailsDTO convertEntityToDto(User entity) {
         return (UserDetailsDTO) entityDtoMapper.convertToDto(entity, UserDetailsDTO.class);

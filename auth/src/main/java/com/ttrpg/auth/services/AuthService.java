@@ -22,7 +22,7 @@ public class AuthService implements UserDetailsService {
             if (user.getUsername().equals(username)) {
                 return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getRole())
+                        .roles(String.valueOf(user.getRoles()))
                         .build();
             }
         }
@@ -45,5 +45,9 @@ public class AuthService implements UserDetailsService {
             }
         }
         return false;
+    }
+
+    public boolean existsByUsernameAndEmail(String username, String email) {
+        return userRepository.findByUsernameAndEmail(username, email) != null;
     }
 }

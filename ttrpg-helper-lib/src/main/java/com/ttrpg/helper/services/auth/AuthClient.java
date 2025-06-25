@@ -20,7 +20,7 @@ public class AuthClient {
 
         return org.springframework.security.core.userdetails.User.withUsername(res.getUsername())
                 .password(res.getPassword())
-                .roles(res.getAuthorities().get(0))
+                .roles(res.getRoles().get(0))
                 .build();
     }
 

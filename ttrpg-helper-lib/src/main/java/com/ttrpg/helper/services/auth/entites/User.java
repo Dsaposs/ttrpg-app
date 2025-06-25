@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Data
 @Getter
@@ -20,7 +22,9 @@ public class User {
 
     private String username;
 
+    private String email;
+
     private String password;
 
-    private String role;
+    private List<String> roles;
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.ttrpg.helper.services.auth.AuthConstants.*;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDetailsDTO> getUser(@RequestParam("u") String name) {
+    public ResponseEntity<UserDetailsDTO> getUserDetails(@RequestParam("u") String name) {
         UserDetails details = authService.loadUserByUsername(name);
         List<String> roles = details.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -38,6 +39,7 @@ public class AuthController {
                 .toList();
         UserDetailsDTO resp = new UserDetailsDTO(
                 details.getUsername(),
+                null,
                 details.getPassword(),
                 roles
         );
@@ -45,14 +47,19 @@ public class AuthController {
     }
 
     @PostMapping(path=AUTHORIZATION_ADD_URI)
-    public ResponseEntity<String> addNewUser (@RequestParam String u, @RequestParam String p) {
-        if (authService.existsByUsername(u)) {
-            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+    public ResponseEntity<String> addNewUser (@RequestBody UserDetailsDTO dto) {
+        if (dto.getUsername() == null || dto.getUsername().isEmpty()) {
+            return new ResponseEntity<>("Username cannot be empty", HttpStatus.BAD_REQUEST);
+        } else if (dto.getEmail() == null || dto.getEmail().isEmpty()) {
+            return new ResponseEntity<>("Email cannot be empty", HttpStatus.BAD_REQUEST);
+        } else if (dto.getPassword() == null || dto.getPassword().isEmpty()) {
+            return new ResponseEntity<>("Password cannot be empty", HttpStatus.BAD_REQUEST);
+        } else if (authService.existsByUsernameAndEmail(dto.getUsername(), dto.getEmail())) {
+            return new ResponseEntity<>("Username and Email combination already exists", HttpStatus.CONFLICT);
         }
-        User n = new User();
-        n.setUsername(u);
-        n.setPassword(passwordEncoder.encode(p));
-        n.setRole(USER);
+
+        User n = UserDetailsDTO.convertDtoToEntity(dto);
+        n.setRoles(Collections.singletonList(USER));
         authService.save(n);
         return new ResponseEntity<>("New User Created", HttpStatus.OK);
     }
@@ -61,7 +68,7 @@ public class AuthController {
     public ResponseEntity<String> addNewTempUser (@PathParam (TEMP_USER_HOST_ID) Integer gameId, @RequestParam String u) {
         User n = new User();
         n.setUsername(u);
-        n.setRole(TEMP_USER);
+        n.setRoles(Collections.singletonList(TEMP_USER));
         n.setPassword(passwordEncoder.encode(u + "#" + gameId));
         authService.save(n);
         return new ResponseEntity<>("New Temporary User Created", HttpStatus.OK);

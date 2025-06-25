@@ -15,6 +15,7 @@ public class UserDTO {
     private static final EntityDtoMapper<User,UserDTO> entityDtoMapper = new EntityDtoMapper<>();
     private Integer id;
     private String username;
+    private String email;
 
     public static UserDTO convertEntityToDto(User entity) {
         return (UserDTO) entityDtoMapper.convertToDto(entity, UserDTO.class);

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.Buffer;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class AuthController {
         UserRegistrationResponseDTO response = new UserRegistrationResponseDTO(
                 dto.getUsername(),
                 dto.getEmail(),
+                null,
                 "User successfully registered"
         );
         // Validate input
@@ -79,6 +81,7 @@ public class AuthController {
         n.setRoles(Collections.singletonList(USER));
         authService.save(n);
 
+        response.setToken(passwordEncoder.encode(dto.getUsername() + ":" + dto.getPassword()));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

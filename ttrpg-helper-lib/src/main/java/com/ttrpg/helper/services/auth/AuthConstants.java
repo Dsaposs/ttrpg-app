@@ -7,6 +7,7 @@ public class AuthConstants {
     public static final String ADMIN_URI = "/admin";
     public static final String AUTHORIZATION_ALL_URI = "/all";
     public static final String AUTHORIZATION_ADD_URI = "/add";
+    public static final String AUTHORIZATION_LOGIN_URI = "/login";
     public static final String TEMP_USER_HOST_ID = "{userId}";
     public static final String AUTHORIZATION_ADD_TEMP_URI = "/add/" + TEMP_USER_HOST_ID;
 

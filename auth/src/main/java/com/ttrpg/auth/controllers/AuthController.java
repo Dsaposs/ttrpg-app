@@ -13,8 +13,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.Buffer;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,6 +46,15 @@ public class AuthController {
                 roles
         );
         return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @GetMapping(path=AUTHORIZATION_LOGIN_URI)
+    public ResponseEntity<String> login(@RequestParam("u") String name) {
+        UserDetails details = authService.loadUserByUsername(name);
+        if (details == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(path=AUTHORIZATION_ADD_URI)
